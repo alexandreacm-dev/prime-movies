@@ -3,6 +3,7 @@ const size_path = 'w500/';
 const size_path_w220 = 'w220_and_h330_face';
 const base_url = 'https://api.themoviedb.org/3/movie';
 const api_key = 'da1ee9a37e77390b12639d0fcbd05286';
+export const KEY_MOVIE = "@movie";
 
 const options: RequestInit = {
     method: 'GET',

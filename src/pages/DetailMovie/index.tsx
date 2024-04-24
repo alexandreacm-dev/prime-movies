@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Movies } from "../../models/movie.model";
 import { api } from "../../services/api.movie";
-import { image_base_path } from "../../constants";
+import { KEY_MOVIE, image_base_path } from "../../constants";
 
 import "./detail-movie.css";
+import { toast } from "react-toastify";
 
 function DetailMovie() {
   const [movie, setMovie] = useState<Movies>();
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -51,6 +53,24 @@ function DetailMovie() {
     );
   }
 
+  function onSaveMovie() {
+    const movieList = localStorage.getItem(KEY_MOVIE);
+    let savedMovies = movieList !== null ? JSON.parse(movieList) : [];
+
+    const hasMovie = savedMovies.some(
+      (savedMovie: Movies) => savedMovie.id === movie?.id
+    );
+
+    if (hasMovie) {
+      toast.warn("This movie already saved in favorites");
+      return;
+    }
+
+    savedMovies.push(movie);
+    localStorage.setItem(KEY_MOVIE, JSON.stringify(savedMovies));
+    toast.success("Movie Saved");
+  }
+
   return (
     <div className="info-movie">
       <h1>{movie?.title}</h1>
@@ -64,11 +84,11 @@ function DetailMovie() {
       <strong>Vote Average {movie?.vote_average} / 10</strong>
 
       <div className="area-buttons">
-        <button>Save</button>
+        <button onClick={onSaveMovie}>Save</button>
         <button>
           <a
             href={`https://www.youtube.com/results?search_query=${movie?.title} Trailer`}
-            target="_blank"
+            target="blank"
             rel="external noreferrer"
           >
             Trailer

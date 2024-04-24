@@ -12,8 +12,8 @@
 }
 
 .info-movie img {
-   border-radius: 8px;
    width: 800px;
+   border-radius: 8px;
    max-width: 100%;
    max-height: 340px;
    object-fit: cover;
